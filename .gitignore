@@ -1,3 +1,7 @@
 **/*.iml
 /.idea
+<<<<<<< HEAD
 **/target/
+=======
+**/target/
+>>>>>>> upstream/master
