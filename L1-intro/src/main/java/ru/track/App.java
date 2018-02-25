@@ -25,7 +25,7 @@ public class App {
     public static void main(String[] args) throws Exception {
        HttpResponse<JsonNode> jsonResponse = Unirest.post(URL)
                 .header("accept", "application/json")
-                .field(FIELD_NAME, "Солодун Алексей ")
+                .field(FIELD_NAME, "Солодун  Алексей ")
                 .field(FIELD_GITHUB, "github.com/SoloAlexey")
                 .field(FIELD_EMAIL, "solodun@phystech.edu")
                 .asJson();
