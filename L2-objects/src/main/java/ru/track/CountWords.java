@@ -86,7 +86,7 @@ public class CountWords {
                 flag = false;
             }
 
-            if (isNumber(line) != true) {
+            if (isNumber(line) != true ) {
                 if(line != null && !line.equals(skipWord) ) {
                     str.append(line + " ");
                 }
