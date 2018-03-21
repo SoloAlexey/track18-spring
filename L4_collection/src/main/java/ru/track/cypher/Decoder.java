@@ -1,9 +1,12 @@
 package ru.track.cypher;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
+
 
 public class Decoder {
 
@@ -24,6 +27,12 @@ public class Decoder {
 
         cypher = new LinkedHashMap<>();
 
+        Iterator<Character> itr1 = domainHist.keySet().iterator();
+        Iterator<Character> itr2 = encryptedDomainHist.keySet().iterator();
+
+        while(itr1.hasNext() && itr2.hasNext()) {
+            cypher.put(itr2.next(), itr1.next());
+        }
 
     }
 
@@ -39,7 +48,28 @@ public class Decoder {
      */
     @NotNull
     public String decode(@NotNull String encoded) {
-        return null;
+
+        String decodText;
+        StringBuilder decText = new StringBuilder();
+
+        //System.out.println(cypher);
+
+        for (int i = 0; i < encoded.length(); i++) {
+            if (encoded.charAt(i) >= 'a' && encoded.charAt(i) <= 'z'){
+                //System.out.print("enc: " + encoded.charAt(i));
+                //System.out.println(" dec: " + cypher.get(encoded.charAt(i)));
+                decText.append(cypher.get(encoded.charAt(i)));
+            }
+            else {
+                decText.append(encoded.charAt(i));
+            }
+        }
+
+        decodText = decText.toString();
+        //System.out.println("encoded: " + encoded);
+        //System.out.println("decoded: " + decodText);
+
+        return decodText;
     }
 
     /**
@@ -53,7 +83,39 @@ public class Decoder {
      */
     @NotNull
     Map<Character, Integer> createHist(@NotNull String text) {
-        return null;
+
+        HashMap<Character, Integer> map = new HashMap<>();
+        LinkedHashMap<Character, Integer> sortedMap= new LinkedHashMap<>();
+
+        for (int i = 0; i < CypherUtil.SYMBOLS.length(); i++) {
+            map.put(CypherUtil.SYMBOLS.charAt(i), 0);
+        }
+
+        for (int i = 0; i < text.length(); i++) {
+            if (map.get(text.charAt(i))!= null){
+                map.put(Character.toLowerCase(text.charAt(i)), map.get(text.charAt(i)) + 1);
+            }
+        }
+
+        char[] letters = new char[CypherUtil.SYMBOLS.length()];
+        System.arraycopy(CypherUtil.SYMBOLS.toCharArray(), 0, letters,0, CypherUtil.SYMBOLS.length());
+
+        for (int i = 0; i < letters.length; i++) {
+            for (int j = 0; j < letters.length - 1; j++) {
+                if(map.get(letters[j]) < map.get(letters[j+1])) {
+                    char ch = letters[j];
+                    letters[j] = letters[j + 1];
+                    letters[j + 1] = ch;
+                }
+            }
+        }
+
+
+        for (char ch: letters) {
+            sortedMap.put(ch, map.get(ch));
+        }
+
+        return sortedMap;
     }
 
 }
